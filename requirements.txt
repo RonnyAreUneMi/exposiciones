@@ -1,0 +1,14 @@
+# Django Framework
+Django==4.2.7
+
+# Environment variables
+python-dotenv==1.0.0
+
+# Windows COM interface for PowerPoint
+pywin32==306
+
+# Image processing (for thumbnails and slides)
+Pillow==10.1.0
+
+# Optional: For better development experience
+django-extensions==3.2.3

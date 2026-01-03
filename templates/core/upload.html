@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="px-4 py-8 flex items-center justify-center min-h-[calc(100vh-80px)]">
+    <div class="container mx-auto max-w-4xl relative">
+        <!-- Floating Ambient Glows -->
+        <div
+            class="absolute -top-24 -left-24 w-64 h-64 bg-[var(--brand-mint)]/10 rounded-full blur-[100px] animate-pulse">
+        </div>
+        <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-purple-500/10 rounded-full blur-[100px] animate-pulse"
+            style="animation-delay: 1s"></div>
+
+        <header class="mb-12 text-center relative z-10">
+            <h1 class="text-6xl font-black mb-4 canva-text tracking-tighter drop-shadow-2xl">
+                Carga tu Diseño
+            </h1>
+            <p class="text-[var(--text-secondary)] text-xl font-medium max-w-lg mx-auto leading-relaxed">
+                Prepara tu presentación para el control por gestos de <b>GESVAS</b>.
+                Sube tu archivo <span class="text-[var(--brand-mint)]">.pptx</span> y el resto es magia.
+            </p>
+        </header>
+
+        {% if success %}
+        <div
+            class="glass-card p-12 rounded-[2rem] text-center border-2 border-[var(--brand-mint)]/30 shadow-2xl animate-bounce-in relative overflow-hidden group">
+            <div class="absolute inset-0 bg-gradient-to-br from-[var(--brand-mint)]/5 to-transparent"></div>
+
+            <div class="relative z-10">
+                <div
+                    class="bg-[var(--brand-mint)] w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_40px_rgba(0,242,234,0.4)] transition-transform duration-500 group-hover:scale-110">
+                    <i class="fas fa-check text-white text-4xl"></i>
+                </div>
+                <h2 class="text-3xl font-black text-[var(--text-primary)] mb-3">¡Diseño Preparado!</h2>
+                <p class="text-[var(--text-secondary)] mb-8 text-lg">Tu presentación se está transformando en segundo
+                    plano.</p>
+
+                <a href="{% url 'core:dashboard' %}"
+                    class="btn-primary inline-flex items-center space-x-3 px-10 py-4 text-lg bg-[var(--text-primary)] text-[var(--bg-primary)] rounded-full hover:scale-105 transition-all">
+                    <i class="fas fa-th-large"></i>
+                    <span>Ir a Mis Diapositivas</span>
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <!-- Upload Card -->
+        <div
+            class="glass-card neon-border-hover p-1 rounded-[2.5rem] bg-gradient-to-br from-[var(--text-primary)]/5 to-transparent shadow-3xl group">
+            <div class="bg-[var(--bg-primary)]/80 backdrop-blur-xl rounded-[2.4rem] p-10 relative overflow-hidden">
+                <form id="upload-form" method="post" enctype="multipart/form-data" class="space-y-8">
+                    {% csrf_token %}
+
+                    <!-- Drop Zone -->
+                    <div id="drop-zone"
+                        class="border-2 border-dashed border-white/10 rounded-3xl p-16 text-center transition-all duration-500 cursor-pointer hover:border-[var(--brand-mint)] hover:bg-white/5 relative overflow-hidden group/zone">
+                        <input type="file" name="file" id="file-input" class="hidden" accept=".pptx">
+
+                        <!-- Inner Glow -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-[var(--brand-mint)]/5 to-transparent opacity-0 group-hover/zone:opacity-100 transition-opacity duration-500">
+                        </div>
+
+                        <div id="upload-prompt" class="relative z-10 transition-all duration-500">
+                            <div
+                                class="w-28 h-28 rounded-3xl bg-[var(--bg-tertiary)] border border-[var(--border-color)] flex items-center justify-center mx-auto mb-8 transition-all duration-500 group-hover/zone:scale-110 group-hover/zone:shadow-[0_0_50px_rgba(0,242,234,0.2)] group-hover/zone:border-[var(--brand-mint)]/30">
+                                <i
+                                    class="fas fa-file-powerpoint text-5xl text-[var(--text-tertiary)] group-hover/zone:text-[var(--brand-mint)] transition-colors duration-500"></i>
+                            </div>
+                            <h3 class="text-3xl font-black text-[var(--text-primary)] mb-3 tracking-tight">Suelta tu
+                                PowerPoint aquí</h3>
+                            <p class="text-[var(--text-secondary)] text-lg font-medium">O haz clic para navegar tus
+                                archivos</p>
+                            <div
+                                class="mt-6 inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-[var(--text-tertiary)] bg-[var(--bg-tertiary)]/50 px-4 py-2 rounded-full border border-[var(--border-color)]">
+                                <i class="fas fa-shield-alt text-[var(--brand-mint)]"></i>
+                                <span>Máximo 50MB • .pptx</span>
+                            </div>
+                        </div>
+
+                        <!-- Selected File State (Hidden by default) -->
+                        <div id="file-ready" class="hidden relative z-10 animate-slide-up">
+                            <div
+                                class="w-32 h-32 rounded-full bg-[var(--brand-mint)] flex items-center justify-center mx-auto mb-6 shadow-[0_0_40px_rgba(0,242,234,0.4)]">
+                                <i class="fas fa-file-alt text-white text-5xl"></i>
+                            </div>
+                            <h3 id="file-name-display"
+                                class="text-2xl font-black text-[var(--text-primary)] mb-2 truncate max-w-md mx-auto">
+                                Nombre_del_Archivo.pptx</h3>
+                            <p class="text-[var(--brand-mint)] font-bold uppercase tracking-tighter text-sm">¡Listo para
+                                transformar!</p>
+                            <button type="button" id="change-file"
+                                class="mt-4 text-xs font-bold text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors underline uppercase tracking-widest">Cambiar
+                                archivo</button>
+                        </div>
+                    </div>
+
+                    <!-- Action Button Container -->
+                    <div class="flex flex-col items-center space-y-4 pt-4">
+                        <button type="submit" id="submit-btn" disabled
+                            class="group/btn relative px-14 py-5 rounded-full font-black text-xl transition-all duration-500 overflow-hidden disabled:opacity-30 disabled:cursor-not-allowed bg-[var(--text-primary)] text-[var(--bg-primary)] hover:bg-[var(--brand-mint)] hover:text-white disabled:hover:scale-100 active:scale-95 shadow-2xl hover:shadow-[0_0_40px_rgba(0,242,234,0.3)]">
+                            <div class="relative z-10 flex items-center space-x-3">
+                                <i class="fas fa-wand-magic-sparkles"></i>
+                                <span>Empezar Magia</span>
+                            </div>
+                        </button>
+                    </div>
+                </form>
+
+                <div id="upload-overlay"
+                    class="hidden absolute inset-0 bg-[var(--bg-primary)]/95 backdrop-blur-md z-[60] flex flex-col items-center justify-center text-center p-10 animate-fade-in">
+                    <div class="relative w-32 h-32 mb-8">
+                        <div class="absolute inset-0 border-4 border-[var(--brand-mint)]/20 rounded-full"></div>
+                        <div id="loading-ring"
+                            class="absolute inset-0 border-4 border-t-[var(--brand-mint)] rounded-full animate-spin">
+                        </div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span id="load-percent" class="text-2xl font-black text-[var(--brand-mint)]">0%</span>
+                        </div>
+                    </div>
+                    <h3 class="text-3xl font-black text-[var(--text-primary)] mb-2">Transformando...</h3>
+                    <p class="text-[var(--text-secondary)] max-w-xs mx-auto text-lg leading-relaxed">Estamos preparando
+                        tu diseño para el control por gestos
+                        de próxima generación.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Margin-fixed Error Toast -->
+        <div id="error-toast"
+            class="fixed bottom-8 left-1/2 -translate-x-1/2 transform translate-y-32 transition-all duration-500 z-[100] w-full max-w-sm px-4">
+            <div
+                class="bg-red-500/90 backdrop-blur-xl border border-red-400/30 text-white p-5 rounded-2xl shadow-2xl flex items-center space-x-4">
+                <div class="bg-white/20 w-10 h-10 rounded-lg flex items-center justify-center shrink-0">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="text-xs font-black uppercase tracking-widest opacity-70">Error de Carga</p>
+                    <p id="error-message" class="font-bold text-sm"></p>
+                </div>
+                <button onclick="hideError()"
+                    class="hover:rotate-90 transition-transform duration-300 opacity-50 hover:opacity-100">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .glass-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .animate-fade-in {
+        animation: fade-in 0.4s ease-out forwards;
+    }
+
+    @keyframes bounce-in {
+        0% {
+            transform: scale(0.3);
+            opacity: 0;
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        70% {
+            transform: scale(0.9);
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .animate-bounce-in {
+        animation: bounce-in 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+
+    @keyframes slide-up {
+        from {
+            transform: translateY(30px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .animate-slide-up {
+        animation: slide-up 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+
+    .shadow-3xl {
+        box-shadow: 0 40px 60px -20px rgba(0, 0, 0, 0.5);
+    }
+</style>
+
+<script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const form = document.getElementById('upload-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const errorToast = document.getElementById('error-toast');
+    const errorMessage = document.getElementById('error-message');
+    const uploadPrompt = document.getElementById('upload-prompt');
+    const fileReady = document.getElementById('file-ready');
+    const fileNameDisplay = document.getElementById('file-name-display');
+    const changeFileBtn = document.getElementById('change-file');
+    const uploadOverlay = document.getElementById('upload-overlay');
+    const loadPercent = document.getElementById('load-percent');
+
+    const MAX_SIZE = 50 * 1024 * 1024; // 50MB
+
+    function showError(msg) {
+        errorMessage.textContent = msg;
+        errorToast.classList.remove('translate-y-32');
+        errorToast.classList.add('translate-y-0');
+        setTimeout(hideError, 5000);
+    }
+
+    function hideError() {
+        errorToast.classList.add('translate-y-32');
+        errorToast.classList.remove('translate-y-0');
+    }
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    changeFileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fileInput.click();
+    });
+
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('border-[var(--brand-mint)]', 'bg-white/5');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('border-[var(--brand-mint)]', 'bg-white/5');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('border-[var(--brand-mint)]', 'bg-white/5');
+        const files = e.dataTransfer.files;
+        if (files.length) handleFile(files[0]);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) handleFile(e.target.files[0]);
+    });
+
+    function handleFile(file) {
+        if (!file.name.toLowerCase().endsWith('.pptx')) {
+            showError('El formato debe ser PowerPoint (.pptx)');
+            return;
+        }
+
+        if (file.size > MAX_SIZE) {
+            showError(`Archivo muy grande (${(file.size / 1024 / 1024).toFixed(1)}MB). Máximo 50MB.`);
+            return;
+        }
+
+        // Assign file to input
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileInput.files = dataTransfer.files;
+
+        // UI Transition
+        uploadPrompt.classList.add('hidden');
+        fileReady.classList.remove('hidden');
+        fileNameDisplay.textContent = file.name;
+
+        submitBtn.disabled = false;
+        dropZone.classList.add('border-[var(--brand-mint)]/50', 'bg-[var(--brand-mint)]/5');
+    }
+
+    form?.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Show high-end loader
+        uploadOverlay.classList.remove('hidden');
+        submitBtn.disabled = true;
+
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.random() * 15;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                form.submit();
+            }
+            loadPercent.textContent = `${Math.round(progress)}%`;
+        }, 200);
+    });
+</script>
+{% endblock %}

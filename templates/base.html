@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Canva Gesture Control{% endblock %}</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="bg-[var(--bg-secondary)] font-sans leading-normal tracking-normal text-[var(--text-primary)]">
+
+    <!-- Header -->
+    <header class="header">
+        <div class="flex items-center space-x-6">
+            <!-- Mobile Menu Toggle -->
+            <button onclick="toggleSidebar()" class="md:hidden theme-toggle text-[var(--brand-mint)]">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Logo -->
+            <!-- Logo -->
+            <a href="{% url 'core:dashboard' %}" class="header-logo flex items-center space-x-2">
+                <div class="bg-[var(--brand-mint)]/20 p-2 rounded-lg">
+                    <i class="fas fa-hand-pointer text-[var(--brand-mint)]"></i>
+                </div>
+                <div class="flex flex-col leading-none">
+                    <span class="gradient-text font-black text-2xl tracking-tighter">GESVA</span>
+                    <span class="text-[var(--text-tertiary)] font-bold text-[10px] tracking-[0.2em] uppercase">IA
+                        Control</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Dark Mode Toggle -->
+        <button id="theme-toggle" class="theme-toggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </header>
+
+    <!-- Sidebar -->
+    <aside id="sidebar"
+        class="sidebar transition-all duration-300 ease-in-out w-64 fixed left-0 top-20 bottom-0 z-40 bg-[var(--bg-secondary)] border-r border-white/5 flex flex-col justify-between group">
+        <nav class="py-8 px-4 space-y-2 flex-1">
+            <a href="{% url 'core:dashboard' %}"
+                class="sidebar-item flex items-center space-x-4 px-4 py-3 rounded-xl hover:bg-[var(--brand-mint)]/10 text-[var(--text-secondary)] hover:text-[var(--brand-mint)] transition-all {% if request.resolver_match.url_name == 'dashboard' %}active bg-[var(--brand-mint)]/10 text-[var(--brand-mint)]{% endif %}">
+                <i class="fas fa-th-large w-6 text-center text-lg"></i>
+                <span
+                    class="whitespace-nowrap transition-opacity duration-300 group-[.collapsed]:opacity-0 group-[.collapsed]:hidden">Mis
+                    Diapositivas</span>
+            </a>
+            <a href="{% url 'core:upload' %}"
+                class="sidebar-item flex items-center space-x-4 px-4 py-3 rounded-xl hover:bg-[var(--brand-mint)]/10 text-[var(--text-secondary)] hover:text-[var(--brand-mint)] transition-all {% if request.resolver_match.url_name == 'upload' %}active bg-[var(--brand-mint)]/10 text-[var(--brand-mint)]{% endif %}">
+                <i class="fas fa-cloud-upload-alt w-6 text-center text-lg"></i>
+                <span
+                    class="whitespace-nowrap transition-opacity duration-300 group-[.collapsed]:opacity-0 group-[.collapsed]:hidden">Subir
+                    Diapositivas</span>
+            </a>
+
+            
+            <a href="{% url 'core:tutorial' %}"
+                class="sidebar-item flex items-center space-x-4 px-4 py-3 rounded-xl hover:bg-[var(--brand-mint)]/10 text-[var(--text-secondary)] hover:text-[var(--brand-mint)] transition-all {% if request.resolver_match.url_name == 'tutorial' %}active bg-[var(--brand-mint)]/10 text-[var(--brand-mint)]{% endif %}">
+                <i class="fas fa-graduation-cap w-6 text-center text-lg"></i>
+                <span
+                    class="whitespace-nowrap transition-opacity duration-300 group-[.collapsed]:opacity-0 group-[.collapsed]:hidden">Tutorial</span>
+            </a>
+
+            <div class="mt-8 border-t border-white/5 pt-4">
+                <p
+                    class="text-[var(--text-tertiary)] text-[10px] font-bold uppercase tracking-widest mb-4 px-4 group-[.collapsed]:opacity-0 group-[.collapsed]:hidden transition-all">
+                    Sistema</p>
+                <a href="#"
+                    class="sidebar-item flex items-center space-x-4 px-4 py-3 rounded-xl hover:bg-[var(--brand-mint)]/10 text-[var(--text-secondary)] hover:text-[var(--brand-mint)] transition-all">
+                    <i class="fas fa-sliders-h w-6 text-center text-lg"></i>
+                    <span
+                        class="whitespace-nowrap transition-opacity duration-300 group-[.collapsed]:opacity-0 group-[.collapsed]:hidden">Ajustes</span>
+                </a>
+                <a href="#"
+                    class="sidebar-item flex items-center space-x-4 px-4 py-3 rounded-xl hover:bg-[var(--brand-mint)]/10 text-[var(--text-secondary)] hover:text-[var(--brand-mint)] transition-all">
+                    <i class="fas fa-user-circle w-6 text-center text-lg"></i>
+                    <span
+                        class="whitespace-nowrap transition-opacity duration-300 group-[.collapsed]:opacity-0 group-[.collapsed]:hidden">Perfil</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Sidebar Toggle (Desktop) -->
+        <button id="sidebar-toggle" onclick="toggleDesktopSidebar()"
+            class="hidden md:flex absolute -right-3 top-10 w-6 h-6 bg-[var(--bg-tertiary)] border border-white/10 rounded-full items-center justify-center text-[var(--text-secondary)] hover:text-[var(--brand-mint)] hover:scale-110 transition-all z-50">
+            <i class="fas fa-chevron-left text-xs transition-transform duration-300" id="sidebar-toggle-icon"></i>
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="main-content" class="main-content transition-all duration-300 ease-in-out md:ml-64 p-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Theme JS -->
+    <script src="{% static 'js/theme.js' %}"></script>
+
+    <script>
+        // Global cleanup for camera when navigating away from presentation
+        document.querySelectorAll('a[href*="dashboard"], a.sidebar-item').forEach(link => {
+            link.addEventListener('click', () => {
+                const video = document.getElementById('input-video');
+                if (video && video.srcObject) {
+                    console.log("Releasing camera before navigation...");
+                    video.srcObject.getTracks().forEach(track => track.stop());
+                }
+            });
+        });
+
+        // Sidebar Toggle Logic
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const toggleIcon = document.getElementById('sidebar-toggle-icon');
+
+        function toggleDesktopSidebar() {
+            sidebar.classList.toggle('collapsed');
+            sidebar.classList.toggle('w-64');
+            sidebar.classList.toggle('w-20');
+
+            // Adjust main content
+            mainContent.classList.toggle('md:ml-64');
+            mainContent.classList.toggle('md:ml-20');
+
+            // Rotate icon
+            if (sidebar.classList.contains('collapsed')) {
+                toggleIcon.classList.add('rotate-180');
+                localStorage.setItem('sidebar-collapsed', 'true');
+            } else {
+                toggleIcon.classList.remove('rotate-180');
+                localStorage.setItem('sidebar-collapsed', 'false');
+            }
+        }
+
+        // Restore state
+        document.addEventListener('DOMContentLoaded', () => {
+            const isCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+            if (isCollapsed) {
+                // Apply collapsed state immediately without animation on load
+                sidebar.classList.add('collapsed', 'w-20');
+                sidebar.classList.remove('w-64');
+                mainContent.classList.add('md:ml-20');
+                mainContent.classList.remove('md:ml-64');
+                toggleIcon.classList.add('rotate-180');
+            }
+        });
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+
+</html>

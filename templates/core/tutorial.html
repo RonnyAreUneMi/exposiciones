@@ -1,0 +1,392 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="px-4 py-12 flex items-center justify-center min-h-[calc(100vh-80px)]">
+    <div class="container mx-auto max-w-5xl relative">
+        <!-- Background Ambient Glow -->
+        <div
+            class="absolute -top-24 -left-24 w-96 h-96 bg-[var(--brand-mint)]/10 rounded-full blur-[120px] animate-pulse pointer-events-none">
+        </div>
+        <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px] animate-pulse pointer-events-none"
+            style="animation-delay: 2s"></div>
+
+        <div
+            class="glass-card rounded-[3rem] shadow-3xl overflow-hidden relative z-10 flex flex-col md:flex-row min-h-[600px] card-clean neon-border-hover tutorial-card">
+
+            <!-- Left Side: Visuals (Interactive Carousel) -->
+            <div
+                class="w-full md:w-1/2 bg-[var(--bg-secondary)]/50 relative overflow-hidden flex items-center justify-center p-12">
+
+                <!-- Step 1 Image: Welcome -->
+                <div id="visual-1" class="tutorial-visual active animate-fade-in text-center">
+                    <img src="{% static 'img/tutorial/WELCOME.png' %}" alt="Bienvenido a GESVAS"
+                        class="w-full h-auto rounded-3xl shadow-2xl transition-transform duration-700 hover:scale-105">
+                </div>
+
+                <!-- Step 2 Image: Right Hand -->
+                <div id="visual-2" class="tutorial-visual hidden animate-slide-up text-center">
+                    <img src="{% static 'img/tutorial/derechaf.png' %}" alt="Mano Derecha GESVAS"
+                        class="w-full h-auto rounded-3xl shadow-2xl transition-transform duration-700 hover:scale-105">
+                </div>
+
+                <!-- Step 3 Image: Left Hand -->
+                <div id="visual-3" class="tutorial-visual hidden animate-slide-up text-center">
+                    <img src="{% static 'img/tutorial/IZQUIERDA.png' %}" alt="Mano Izquierda GESVAS"
+                        class="w-full h-auto rounded-3xl shadow-2xl transition-transform duration-700 hover:scale-105">
+                </div>
+
+                <!-- Step 4 Image: UI Panel -->
+                <div id="visual-4" class="tutorial-visual hidden animate-fade-in">
+                    <div
+                        class="bg-gradient-to-br from-[var(--brand-mint)]/20 to-blue-500/20 w-80 h-80 rounded-[4rem] border border-white/10 flex flex-col items-center justify-center p-8 text-center backdrop-blur-3xl shadow-2xl">
+                        <i class="fas fa-desktop text-8xl text-[var(--brand-mint)] mb-8 animate-bounce"></i>
+                        <p class="text-white font-bold text-xl uppercase tracking-widest">Panel GESVAS</p>
+                    </div>
+                </div>
+
+                <!-- Step 5 Image: Fist Control -->
+                <div id="visual-5" class="tutorial-visual hidden animate-fade-in">
+                    <div class="text-center space-y-8">
+                        <div class="space-y-4">
+                            <div class="flex justify-center space-x-8">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-32 h-32 rounded-full bg-green-500/20 border-2 border-green-400 flex items-center justify-center mb-4 animate-pulse">
+                                        <i class="fas fa-hand-fist text-5xl text-green-400"></i>
+                                    </div>
+                                    <p class="text-green-400 font-bold text-lg">Puño Derecha</p>
+                                    <p class="text-white text-sm">= CÁMARA ON</p>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="w-32 h-32 rounded-full bg-red-500/20 border-2 border-red-400 flex items-center justify-center mb-4 animate-pulse">
+                                        <i class="fas fa-hand-fist text-5xl text-red-400"></i>
+                                    </div>
+                                    <p class="text-red-400 font-bold text-lg">Puño Izquierda</p>
+                                    <p class="text-white text-sm">= CÁMARA OFF</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step Indicator Dots -->
+                <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-3">
+                    <div class="dot active w-4 h-1 rounded-full bg-[var(--brand-mint)] transition-all duration-300">
+                    </div>
+                    <div class="dot w-2 h-1 rounded-full bg-white/20 transition-all duration-300"></div>
+                    <div class="dot w-2 h-1 rounded-full bg-white/20 transition-all duration-300"></div>
+                    <div class="dot w-2 h-1 rounded-full bg-white/20 transition-all duration-300"></div>
+                    <div class="dot w-2 h-1 rounded-full bg-white/20 transition-all duration-300"></div>
+                </div>
+            </div>
+
+            <!-- Right Side: Content & Navigation -->
+            <div class="w-full md:w-1/2 p-12 flex flex-col justify-between">
+
+                <!-- Steps Control -->
+                <div id="steps-container">
+
+                    <!-- Step 1: Fist Control -->
+                    <div id="step-1" class="tutorial-step active animate-fade-in">
+                        <span
+                            class="inline-block px-4 py-1 rounded-full bg-[var(--brand-mint)]/10 text-[var(--brand-mint)] text-xs font-black uppercase tracking-widest mb-6 border border-[var(--brand-mint)]/20">Paso
+                            01 / 04</span>
+                        <h2 class="text-5xl font-black text-[var(--text-primary)] mb-6 tracking-tighter leading-none">
+                            Control de <span class="text-yellow-400">Cámara</span> con Puño</h2>
+                        <p class="text-[var(--text-secondary)] text-xl leading-relaxed mb-8">Usa un gesto de puño cerrado para activar o desactivar los gestos:</p>
+                        <div class="space-y-6">
+                            <div
+                                class="flex items-start space-x-4 p-4 rounded-2xl bg-green-500/10 border border-green-500/30 soft-card">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-green-500 flex items-center justify-center shrink-0">
+                                    <i class="fas fa-hand-fist text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-green-400 text-lg">Puño Mano DERECHA</p>
+                                    <p class="text-[var(--text-secondary)] text-base">Activa los gestos para navegar las diapositivas (botón se pone <b class="text-green-400">VERDE</b>)</p>
+                                </div>
+                            </div>
+                            <div
+                                class="flex items-start space-x-4 p-4 rounded-2xl bg-red-500/10 border border-red-500/30 soft-card">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-red-500 flex items-center justify-center shrink-0">
+                                    <i class="fas fa-hand-fist text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-red-400 text-lg">Puño Mano IZQUIERDA</p>
+                                    <p class="text-[var(--text-secondary)] text-base">Desactiva los gestos para parar la IA (botón se pone <b class="text-red-400">ROJO</b>)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Right Hand (NEXT) -->
+                    <div id="step-2" class="tutorial-step hidden animate-slide-up">
+                        <span
+                            class="inline-block px-4 py-1 rounded-full bg-[var(--brand-mint)]/10 text-[var(--brand-mint)] text-xs font-black uppercase tracking-widest mb-6 border border-[var(--brand-mint)]/20">Paso
+                            02 / 04</span>
+                        <h2 class="text-5xl font-black text-[var(--text-primary)] mb-6 tracking-tighter leading-none">
+                            Mano <span class="text-blue-400">Derecha</span>: Siguiente</h2>
+                        <p class="text-[var(--text-secondary)] text-xl leading-relaxed mb-8">Usa tu mano derecha para
+                            avanzar en tu presentación.</p>
+                        <ul class="space-y-4">
+                            <li class="flex items-center space-x-4 text-lg">
+                                <span
+                                    class="w-12 h-12 rounded-full border-2 border-blue-400/30 flex items-center justify-center text-blue-400 font-black">→</span>
+                                <span class="text-[var(--text-primary)]">Levanta para <b>Siguiente
+                                        Diapositiva</b></span>
+                            </li>
+                            <li class="flex items-center space-x-4 text-sm text-[var(--text-secondary)] pl-16">
+                                <span>Realiza un movimiento suave y claro.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Step 3: Left Hand (PREV) -->
+                    <div id="step-3" class="tutorial-step hidden animate-slide-up">
+                        <span
+                            class="inline-block px-4 py-1 rounded-full bg-[var(--brand-mint)]/10 text-[var(--brand-mint)] text-xs font-black uppercase tracking-widest mb-6 border border-[var(--brand-mint)]/20">Paso
+                            03 / 04</span>
+                        <h2 class="text-5xl font-black text-[var(--text-primary)] mb-6 tracking-tighter leading-none">
+                            Mano <span class="text-orange-400">Izquierda</span>: Anterior</h2>
+                        <p class="text-[var(--text-secondary)] text-xl leading-relaxed mb-8">Usa tu mano izquierda para
+                            retroceder si necesitas volver a explicar algo.</p>
+                        <ul class="space-y-4">
+                            <li class="flex items-center space-x-4 text-lg">
+                                <span
+                                    class="w-12 h-12 rounded-full border-2 border-orange-400/30 flex items-center justify-center text-orange-400 font-black">←</span>
+                                <span class="text-[var(--text-primary)]">Levanta para <b>Diapositiva Anterior</b></span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Step 4: Control Panel -->
+                    <div id="step-4" class="tutorial-step hidden animate-slide-up">
+                        <span
+                            class="inline-block px-4 py-1 rounded-full bg-[var(--brand-mint)]/10 text-[var(--brand-mint)] text-xs font-black uppercase tracking-widest mb-6 border border-[var(--brand-mint)]/20">Paso
+                            04 / 04</span>
+                        <h2 class="text-5xl font-black text-[var(--text-primary)] mb-6 tracking-tighter leading-none">
+                            Interfaz <span class="text-cyan-400">GESVAS</span></h2>
+                        <p class="text-[var(--text-secondary)] text-lg mb-8">Botones diseñados para un control total:
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-4 text-xs font-bold uppercase tracking-tighter">
+                            <div class="step4-item">
+                                <i class="fas fa-video text-green-500 step4-icon bg-green-500/10"></i>
+                                <span class="step4-text"><b>Gestos ON/OFF:</b> Activa la IA</span>
+                            </div>
+                            <div class="step4-item">
+                                <i class="fas fa-eye text-purple-500 step4-icon bg-purple-500/10"></i>
+                                <span class="step4-text"><b>Vista Cámara:</b> Previsualización</span>
+                            </div>
+                            <div class="step4-item">
+                                <i class="fas fa-expand text-cyan-500 step4-icon bg-cyan-500/10"></i>
+                                <span class="step4-text"><b>Full Screen:</b> Pantalla completa</span>
+                            </div>
+                            <div class="step4-item">
+                                <i class="fas fa-times text-red-500 step4-icon bg-red-500/10"></i>
+                                <span class="step4-text"><b>Salir:</b> Volver al Dashboard</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Navigation -->
+                <div class="relative z-20 mt-12 flex items-center justify-between border-t border-white/5 pt-8">
+                    <button id="prev-btn"
+                        class="hidden text-[var(--text-secondary)] font-bold hover:text-[var(--text-primary)] transition-colors flex items-center space-x-2">
+                        <i class="fas fa-arrow-left text-xs"></i>
+                        <span>Anterior</span>
+                    </button>
+                    <div class="flex-1"></div>
+                    <button id="next-btn"
+                        class="bg-[var(--text-primary)] text-[var(--bg-primary)] px-8 py-4 rounded-full font-black flex items-center space-x-3 shadow-xl hover:scale-105 active:scale-95 transition-all">
+                        <span>Siguiente</span>
+                        <i class="fas fa-chevron-right text-xs"></i>
+                    </button>
+                    <a id="finish-btn" href="{% url 'core:dashboard' %}"
+                        class="hidden bg-[var(--brand-mint)] text-white px-10 py-4 rounded-full font-black flex items-center space-x-3 shadow-xl hover:shadow-[var(--brand-mint)]/30 hover:scale-105 active:scale-95 transition-all">
+                        <span>Comenzemos</span>
+                        <i class="fas fa-play"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Refuerzo de contraste y bordes tipo tarjetas de "Mis diapositivas" */
+    .tutorial-card {
+        background: var(--bg-primary);
+        border-radius: 3rem;
+        position: relative;
+    }
+    .tutorial-card::before { /* borde neon siempre activo, visible en claro */
+        opacity: 0.9;
+        pointer-events: none;
+    }
+    [data-theme="dark"] .tutorial-card::before { /* un poco más sutil en oscuro */
+        opacity: 0.75;
+    }
+
+    /* Sombra lila superior al hover */
+    .tutorial-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 16px;
+        background: linear-gradient(180deg, rgba(196, 181, 253, 0.45), transparent);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .3s ease;
+        border-top-left-radius: 3rem;
+        border-top-right-radius: 3rem;
+    }
+    .tutorial-card:hover::after {
+        opacity: 1;
+    }
+    .tutorial-card:hover {
+        box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.4), 0 -10px 30px rgba(196, 181, 253, 0.35) !important;
+    }
+
+    /* Bordes suaves coherentes con la página */
+    .soft-card {
+        border: 1px solid var(--border-color) !important;
+        box-shadow: var(--shadow-sm);
+        transition: border-color .3s ease, box-shadow .3s ease, transform .2s ease;
+        border-radius: 16px;
+        background: color-mix(in oklab, var(--bg-tertiary) 88%, transparent);
+    }
+    .soft-card:hover {
+        border-color: var(--border-hover) !important;
+        box-shadow: var(--shadow-md);
+    }
+
+    /* Suaviza bordes de los recuadros del paso 4 */
+    /* Paso 4 - Mejora visual modo claro */
+    .step4-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        background: rgba(255,255,255,0.7);
+        box-shadow: var(--shadow-sm);
+        transition: border-color .25s ease, box-shadow .25s ease, transform .15s ease, background .25s ease;
+    }
+    [data-theme="dark"] .step4-item {
+        background: rgba(30,41,59,0.6);
+    }
+    .step4-item:hover {
+        border-color: var(--border-hover);
+        box-shadow: var(--shadow-md);
+        background: rgba(255,255,255,0.9);
+        transform: translateY(-1px);
+    }
+    [data-theme="dark"] .step4-item:hover {
+        background: rgba(30,41,59,0.8);
+    }
+    .step4-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        padding: 8px;
+    }
+    .step4-text {
+        color: var(--text-secondary);
+    }
+
+    .tutorial-visual,
+    .tutorial-step {
+        transition: all 0.5s ease-in-out;
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    .active {
+        display: block !important;
+    }
+
+    @keyframes slide-up {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .animate-slide-up {
+        animation: slide-up 0.5s ease-out forwards;
+    }
+
+    .tutorial-visual img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .shadow-3xl {
+        box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.4);
+    }
+</style>
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 4;
+
+    const nextBtn = document.getElementById('next-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const finishBtn = document.getElementById('finish-btn');
+    const dots = document.querySelectorAll('.dot');
+
+    function updateStep(newStep) {
+        // Hide current
+        document.getElementById(`step-${currentStep}`).classList.add('hidden');
+        document.getElementById(`step-${currentStep}`).classList.remove('active');
+        document.getElementById(`visual-${currentStep}`).classList.add('hidden');
+        document.getElementById(`visual-${currentStep}`).classList.remove('active');
+        dots[currentStep - 1].classList.remove('active', 'w-4', 'bg-[var(--brand-mint)]');
+        dots[currentStep - 1].classList.add('w-2', 'bg-white/20');
+
+        currentStep = newStep;
+
+        // Show new
+        document.getElementById(`step-${currentStep}`).classList.remove('hidden');
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+        document.getElementById(`visual-${currentStep}`).classList.remove('hidden');
+        document.getElementById(`visual-${currentStep}`).classList.add('active');
+        dots[currentStep - 1].classList.add('active', 'w-4', 'bg-[var(--brand-mint)]');
+        dots[currentStep - 1].classList.remove('w-2', 'bg-white/20');
+
+        // Update buttons
+        prevBtn.classList.toggle('hidden', currentStep === 1);
+        if (currentStep === totalSteps) {
+            nextBtn.classList.add('hidden');
+            finishBtn.classList.remove('hidden');
+        } else {
+            nextBtn.classList.remove('hidden');
+            finishBtn.classList.add('hidden');
+        }
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (currentStep < totalSteps) updateStep(currentStep + 1);
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentStep > 1) updateStep(currentStep - 1);
+    });
+</script>
+{% endblock %}

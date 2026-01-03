@@ -1,0 +1,335 @@
+/* ==========================================
+   VARIABLES CSS - PALETA NAVY & MINT
+   ========================================== */
+:root {
+    /* Brand Colors (Updated) */
+    --canva-blue: #00c4cc;
+    /* Canva Blue */
+    --brand-mint: #5eead4;
+    /* Mint suave */
+    --brand-sky: #7dd3fc;
+    /* Sky blue suave */
+    --brand-lavender: #c4b5fd;
+    /* Soft Lavender para el icono */
+    --brand-navy: #0f172a;
+    --brand-navy-light: #1e293b;
+
+    /* Neon Colors (AWS Style) */
+    --neon-gradient: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #4facfe, #00f2fe);
+
+    /* Theme Light (Snow & Mint Premium) */
+    --bg-primary: #ffffff;
+    /* Pure Snow */
+    --bg-secondary: #f0f7ff;
+    /* Very light blue tint for airiness */
+    --bg-tertiary: #e0f2fe;
+    /* Lightest sky for soft elevations */
+    --text-primary: #0f172a;
+    /* Deep Indigo for sharp readability */
+    --text-secondary: #334155;
+    --text-tertiary: #64748b;
+    --border-color: #e2e8f0;
+    --border-hover: var(--brand-mint);
+
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+[data-theme="dark"] {
+    --bg-primary: #0f172a;
+    /* Azul Marino Profundo */
+    --bg-secondary: #020617;
+    /* Sombra más profunda */
+    --bg-tertiary: #1e293b;
+    /* Custom Scrollbar for better design */
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-tertiary: #64748b;
+    --border-color: transparent;
+    --border-hover: #2dd4bf;
+
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.6);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.7);
+}
+
+/* ==========================================
+   SCROLLBAR
+   ========================================== */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* ==========================================
+   NEON BORDER (ALWAYS ACTIVE)
+   ========================================== */
+.neon-border-hover {
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.neon-border-hover::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 2.5px;
+    /* Gradient adapted to AWS Style - Always visible */
+    background: var(--neon-gradient);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    opacity: 0.6;
+    /* Siempre activo pero sutil */
+    transition: all 0.4s ease;
+    animation: border-glow-subtle 3s ease-in-out infinite;
+}
+
+.neon-border-hover:hover::before {
+    opacity: 1;
+    transform: scale(1.01);
+}
+
+@keyframes border-glow-subtle {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* ==========================================
+   GRADIENT TEXT
+   ========================================== */
+.gradient-text {
+    background: var(--neon-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.canva-text {
+    color: var(--canva-blue);
+}
+
+/* ==========================================
+   PLAY BUTTON NEON (DASHBOARD)
+   ========================================== */
+.play-button-neon {
+    position: relative;
+}
+
+.play-button-neon::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg, var(--brand-mint), #ffffff, var(--brand-mint-light));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    opacity: 1;
+    animation: neon-pulse 2s ease-in-out infinite;
+}
+
+@keyframes neon-pulse {
+
+    0%,
+    100% {
+        opacity: 0.8;
+        box-shadow: 0 0 10px var(--brand-mint);
+    }
+
+    50% {
+        opacity: 0.4;
+        box-shadow: 0 0 20px var(--brand-mint);
+    }
+}
+
+/* ==========================================
+   SIDEBAR
+   ========================================== */
+.sidebar {
+    /* Position handled by Tailwind classes in base.html */
+    background: var(--bg-primary);
+    border-right: none;
+    z-index: 40;
+    /* Transition handled by Tailwind */
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 24px;
+    color: var(--text-secondary) !important;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 4px solid transparent;
+    margin: 4px 12px;
+    border-radius: 12px;
+}
+
+.sidebar-item:hover {
+    transform: translateX(5px);
+    color: var(--text-secondary) !important;
+}
+
+.sidebar-item:hover i {
+    color: var(--brand-mint) !important;
+    background: rgba(94, 234, 212, 0.15);
+    padding: 6px 8px;
+    border-radius: 6px;
+    margin-left: -6px;
+    margin-right: 8px;
+    transition: all 0.3s ease;
+}
+
+.sidebar-item.active {
+    background: rgba(0, 196, 204, 0.1);
+    color: var(--canva-blue) !important;
+    font-weight: 600;
+}
+
+.sidebar-item.active i {
+    color: var(--canva-blue) !important;
+}
+
+.sidebar-item i {
+    margin-right: 14px;
+    width: 20px;
+    text-align: center;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    color: inherit;
+}
+
+/* ==========================================
+   HEADER
+   ========================================== */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: var(--bg-primary);
+    border-bottom: none;
+    /* Sin bordes blancos de divisiones */
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+.header-logo {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--brand-mint);
+    text-decoration: none;
+    letter-spacing: -0.025em;
+}
+
+.header-logo i {
+    color: var(--brand-mint);
+}
+
+/* ==========================================
+   THEME TOGGLE
+   ========================================== */
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--bg-tertiary);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-primary);
+}
+
+.theme-toggle:hover {
+    background: var(--brand-mint);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* ==========================================
+   MAIN CONTENT AREA
+   ========================================== */
+.main-content {
+    /* Margin handled by Tailwind classes in base.html */
+    margin-top: 64px;
+    min-height: calc(100vh - 64px);
+    background: var(--bg-secondary);
+    padding: 0;
+}
+
+/* ==========================================
+   DASHBOARD CARDS
+   ========================================== */
+.card-clean {
+    background: var(--bg-primary);
+    border-radius: 20px;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.card-clean:hover {
+    transform: translateY(-12px) scale(1.03);
+    box-shadow: 0 25px 35px -5px rgba(0, 196, 204, 0.25), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+}
+
+.card-clean:hover::before {
+    opacity: 1 !important;
+    animation: none;
+    /* Dejar de pulsar al hover para mayor claridad */
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 20px 0 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}

@@ -1,3 +1,4 @@
+import { DrawManager } from './DrawManager.js';
 export class SlideManager {
     constructor() {
         this.slides = document.querySelectorAll('.slide');
@@ -16,6 +17,17 @@ export class SlideManager {
         this.tutorialModal = document.getElementById('tutorial-modal');
         this.startBtn = document.getElementById('start-btn');
 
+        this.drawManager = new DrawManager();
+        this.drawBtn = document.getElementById('draw-btn');
+        this.isDrawingMode = false;
+
+        this.drawMenu = document.getElementById('draw-menu');
+        this.colorPicker = document.getElementById('draw-color');
+        this.sizePicker = document.getElementById('draw-size');
+        this.clearDrawBtn = document.getElementById('clear-draw-btn');
+
+
+
         this.uiTimeout = null;
         this.uiHideDelay = 3000;
 
@@ -29,6 +41,22 @@ export class SlideManager {
         this.fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
         this.toggleCameraBtn.addEventListener('click', () => this.togglePiP());
         this.cameraToggleBtn.addEventListener('click', () => this.toggleCamera());
+        this.drawBtn.addEventListener('click', () => this.toggleDrawMode());
+
+        this.colorPicker.addEventListener('input', (e) => {
+        this.drawManager.setColor(e.target.value);
+        });
+
+        this.sizePicker.addEventListener('input', (e) => {
+            this.drawManager.setSize(e.target.value);
+        });
+
+        this.clearDrawBtn.addEventListener('click', () => {
+            this.drawManager.clear();
+        });
+
+
+        
 
         this.startBtn.addEventListener('click', () => {
             this.tutorialModal.classList.add('hidden');
@@ -169,6 +197,11 @@ export class SlideManager {
         }
     }
 
+   
+
+    
+
+
     togglePiP() {
         this.pipCamera.classList.toggle('hidden');
     }
@@ -192,6 +225,50 @@ export class SlideManager {
             document.dispatchEvent(new CustomEvent('camera-state-changed', { detail: { active: true } }));
         }
     }
+
+    toggleDrawMode() {
+        console.log('✏️ CLICK DIBUJO');
+
+        this.isDrawingMode = !this.isDrawingMode;
+
+        const icon = this.drawBtn.querySelector('i');
+        const tooltip = this.drawBtn.querySelector('span');
+
+        if (this.isDrawingMode) {
+            this.drawManager.enable();
+            this.showDrawMenu();
+
+            this.slides.forEach(slide => {
+                slide.style.pointerEvents = 'none';
+            });
+
+            icon.classList.add('text-yellow-300');
+            tooltip.textContent = 'Dibujar ON';
+
+        } else {
+            this.drawManager.disable();
+            this.hideDrawMenu();
+
+            this.slides.forEach(slide => {
+                slide.style.pointerEvents = 'auto';
+            });
+
+            icon.classList.remove('text-yellow-300');
+            tooltip.textContent = 'Dibujar OFF';
+        }
+    }
+
+
+    showDrawMenu() {
+    this.drawMenu.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+    this.drawMenu.classList.add('opacity-100', 'scale-100');
+    }
+    hideDrawMenu() {
+        this.drawMenu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+        this.drawMenu.classList.remove('opacity-100', 'scale-100');
+    }
+
+
 }
 
 if (document.readyState === 'loading') {

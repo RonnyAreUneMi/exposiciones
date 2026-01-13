@@ -11,15 +11,25 @@
                     <button id="import-menu-btn" class="w-10 h-10 rounded-lg border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)] flex items-center justify-center hover:border-[var(--brand-mint)] transition-colors shadow-sm">
                         <i class="fas fa-bars text-base"></i>
                     </button>
-                    <div id="import-menu" class="hidden absolute mt-2 w-64 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-xl shadow-lg z-10">
+                    <div id="import-menu" class="hidden absolute right-0 mt-2 w-64 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-xl shadow-xl overflow-hidden z-10">
                         <div class="py-2">
-                            <a href="{% url 'core:canva_login' %}" class="flex items-center gap-3 px-4 py-2 hover:bg-[var(--bg-tertiary)] transition-colors">
-                                <img src="{% static 'img/canva_logo_icon_168460.svg' %}" alt="Canva" class="w-5 h-5" />
-                                <span class="text-[var(--text-primary)] font-medium">Importar de Canva</span>
+                            <!-- Importar de Canva -->
+                            <a href="{% url 'core:canva_login' %}" class="flex items-center gap-3 px-4 py-3 hover:bg-[var(--bg-tertiary)] transition-all group">
+                                <div class="w-6 h-6 flex items-center justify-center flex-shrink-0">
+                                    <img src="{% static 'img/canva_logo_icon_168460.svg' %}" alt="Canva" class="w-5 h-5 object-contain" />
+                                </div>
+                                <span class="text-[var(--text-primary)] font-medium text-sm group-hover:text-[var(--brand-mint)] transition-colors">Importar de Canva</span>
                             </a>
-                            <a href="#" class="flex items-center gap-3 px-4 py-2 hover:bg-[var(--bg-tertiary)] transition-colors">
-                                <i class="fab fa-google-drive text-blue-500"></i>
-                                <span class="text-[var(--text-primary)] font-medium">Importar de Google Drive</span>
+                            
+                            <!-- Divider -->
+                            <div class="h-px bg-[var(--border-color)] my-1"></div>
+                            
+                            <!-- Importar de Google Drive -->
+                            <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-[var(--bg-tertiary)] transition-all group">
+                                <div class="w-6 h-6 flex items-center justify-center flex-shrink-0">
+                                    <i class="fab fa-google-drive text-lg" style="color: #4285F4;"></i>
+                                </div>
+                                <span class="text-[var(--text-primary)] font-medium text-sm group-hover:text-[var(--brand-mint)] transition-colors">Importar de Google Drive</span>
                             </a>
                         </div>
                     </div>
@@ -28,7 +38,7 @@
                 <!-- Title aligned to left -->
                 <div class="text-left order-1 flex-1">
                     <h1 class="text-6xl font-black mb-1 canva-text tracking-tighter">Tus Presentaciones</h1>
-                    <p class="text-[var(--text-secondary)] text-sm font-medium">Gestiona y presenta tus diapositivas con el poder de <b>GESVAS</b></p>
+                    <p class="text-[var(--text-secondary)] text-sm font-medium">Gestiona y presenta tus diapositivas con el poder de <b>AureaMotion</b></p>
                 </div>
             </div>
         </header>
@@ -45,7 +55,7 @@
             {% for item in db_presentations %}
             <div class="relative group">
                 <a href="{% url 'core:presentation' item.local_id %}" class="block">
-                    <div class="card-clean neon-border-hover relative">
+                    <div class="card-clean neon-border-hover relative h-[340px] flex flex-col">
                         <div class="overflow-hidden rounded-2xl">
                             <!-- Image Container -->
                             <div class="h-48 bg-[var(--bg-tertiary)] overflow-hidden relative">

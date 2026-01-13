@@ -172,60 +172,223 @@
 }
 
 /* ==========================================
-   SIDEBAR
+   SIDEBAR BASE - CORREGIDO
    ========================================== */
 .sidebar {
-    /* Position handled by Tailwind classes in base.html */
-    background: var(--bg-primary);
-    border-right: none;
-    z-index: 40;
-    /* Transition handled by Tailwind */
+  position: fixed;
+  top: 64px;
+  left: 0;
+  bottom: 0;
+  z-index: 50;
+  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease-in-out;
+  overflow-y: auto;
+  overflow-x: visible; /* ← CLAVE: permite que el botón salga del sidebar */
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* Estados de ancho */
+.sidebar {
+  width: 16rem; /* 256px abierto por defecto */
+}
+
+.sidebar.collapsed {
+  width: 5rem; /* 80px cerrado */
+}
+
+/* ==========================================
+   CONTENEDOR DE NAVEGACIÓN
+   ========================================== */
+.sidebar nav {
+  padding: 2rem 0;
+  flex: 1;
+}
+
+/* ==========================================
+   ITEMS DEL SIDEBAR - ALINEACIÓN PERFECTA
+   ========================================== */
 .sidebar-item {
-    display: flex;
-    align-items: center;
-    padding: 14px 24px;
-    color: var(--text-secondary) !important;
-    text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-left: 4px solid transparent;
-    margin: 4px 12px;
-    border-radius: 12px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Espacio consistente entre ícono y texto */
+  padding: 0.75rem 1rem;
+  margin: 0.375rem 1rem;
+  border-radius: 0.75rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  min-height: 48px; /* Altura mínima consistente */
 }
 
-.sidebar-item:hover {
-    transform: translateX(5px);
-    color: var(--text-secondary) !important;
-}
-
-.sidebar-item:hover i {
-    color: var(--brand-mint) !important;
-    background: rgba(94, 234, 212, 0.15);
-    padding: 6px 8px;
-    border-radius: 6px;
-    margin-left: -6px;
-    margin-right: 8px;
-    transition: all 0.3s ease;
-}
-
-.sidebar-item.active {
-    background: rgba(0, 196, 204, 0.1);
-    color: var(--canva-blue) !important;
-    font-weight: 600;
-}
-
-.sidebar-item.active i {
-    color: var(--canva-blue) !important;
-}
-
+/* Ícono siempre centrado */
 .sidebar-item i {
-    margin-right: 14px;
-    width: 20px;
-    text-align: center;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    color: inherit;
+  width: 24px; /* Ancho fijo para todos los íconos */
+  min-width: 24px;
+  text-align: center;
+  font-size: 1.25rem;
+  flex-shrink: 0; /* No permite que el ícono se encoja */
+}
+
+/* Texto del sidebar */
+.sidebar-item span {
+  white-space: nowrap;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+}
+
+/* ==========================================
+   ESTADOS: HOVER Y ACTIVE
+   ========================================== */
+.sidebar-item:hover {
+  background: rgba(94, 234, 212, 0.1);
+  color: var(--brand-mint);
+}
+
+.sidebar-item:focus-visible {
+  outline: 2px solid var(--brand-mint);
+  outline-offset: 2px;
+}
+
+/* Estado activo con barra vertical */
+.sidebar-item.active {
+  background: rgba(94, 234, 212, 0.1);
+  color: var(--brand-mint);
+  font-weight: 600;
+}
+
+.sidebar-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20%;
+  bottom: 20%;
+  width: 3px;
+  background: var(--brand-mint);
+  border-radius: 0 2px 2px 0;
+}
+
+/* ==========================================
+   SIDEBAR COLAPSADO
+   ========================================== */
+.sidebar.collapsed .sidebar-item {
+  padding: 0.75rem;
+  margin: 0.375rem 0.5rem;
+  justify-content: center;
+}
+
+.sidebar.collapsed .sidebar-item span {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.sidebar.collapsed .sidebar-item.active::before {
+  left: 50%;
+  transform: translateX(-50%);
+  top: auto;
+  bottom: -2px;
+  width: 24px;
+  height: 3px;
+  border-radius: 2px 2px 0 0;
+}
+
+/* ==========================================
+   SECCIÓN "SISTEMA"
+   ========================================== */
+.sidebar nav > div {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar nav p {
+  color: var(--text-tertiary);
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed nav p {
+  opacity: 0;
+  height: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* ==========================================
+   BOTÓN TOGGLE DESKTOP
+   ========================================== */
+#sidebar-toggle {
+  position: absolute;
+  right: -12px;
+  top: 40px;
+  width: 28px; /* Aumentado un poco */
+  height: 28px; /* Aumentado un poco */
+  background: var(--bg-primary); /* Más visible */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 60;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Sombra para destacarlo */
+}
+
+#sidebar-toggle:hover {
+  color: var(--brand-mint);
+  transform: scale(1.1);
+  background: var(--bg-primary);
+}
+
+#sidebar-toggle i {
+  font-size: 0.75rem;
+  transition: transform 0.3s ease;
+}
+
+#sidebar-toggle i.rotate-180 {
+  transform: rotate(180deg);
+}
+
+/* ==========================================
+   RESPONSIVE MÓVIL
+   ========================================== */
+@media (max-width: 768px) {
+  .sidebar {
+    top: 0;
+    transform: translateX(-100%);
+    width: 16rem;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 20px 0 25px -5px rgba(0, 0, 0, 0.3);
+  }
+
+  #sidebar-toggle {
+    display: none;
+  }
+}
+
+/* ==========================================
+   MOTION REDUCIDO
+   ========================================== */
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .sidebar-item,
+  .sidebar-item span {
+    transition: none;
+  }
 }
 
 /* ==========================================

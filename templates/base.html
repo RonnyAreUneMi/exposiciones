@@ -36,7 +36,7 @@
                     <i class="fas fa-hand-pointer text-[var(--brand-mint)]"></i>
                 </div>
                 <div class="flex flex-col leading-none">
-                    <span class="gradient-text font-black text-2xl tracking-tighter">GESVA</span>
+                    <span class="gradient-text font-black text-2xl tracking-tighter">AureaMotion</span>
                     <span class="text-[var(--text-tertiary)] font-bold text-[10px] tracking-[0.2em] uppercase">IA
                         Control</span>
                 </div>
@@ -126,6 +126,11 @@
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.getElementById('main-content');
         const toggleIcon = document.getElementById('sidebar-toggle-icon');
+      
+        function toggleSidebar() {
+        sidebar.classList.toggle('open');
+        sidebar.classList.toggle('closed');
+        }
 
         function toggleDesktopSidebar() {
             sidebar.classList.toggle('collapsed');

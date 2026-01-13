@@ -13,14 +13,22 @@
 <div class="relative w-full h-screen bg-black flex flex-col items-center justify-center overflow-hidden"
     id="presentation-container">
 
+
     <!-- Slides Container -->
     <div id="slides-wrapper" class="w-full h-full flex items-center justify-center p-0">
         {% for slide_url in slides %}
         <img src="{{ slide_url }}"
-            class="slide absolute max-w-full max-h-full object-contain transition-opacity duration-500 {% if forloop.first %}opacity-100{% else %}opacity-0{% endif %}"
+            class="slide  absolute max-w-full max-h-full object-contain transition-opacity duration-500 {% if forloop.first %}opacity-100{% else %}opacity-0{% endif %}"
             data-index="{{ forloop.counter0 }}">
         {% endfor %}
     </div>
+
+      <!-- Canvas de dibujo (Lápiz) -->
+    <canvas
+        id="draw-canvas"
+        class="absolute inset-0 z-40 pointer-events-none">
+    </canvas>
+  
 
     <!-- Control Bar - Bottom Center (Auto-hide) -->
     <div id="ui-overlay" class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500">
@@ -72,6 +80,37 @@
                 <i class="fas fa-expand text-base"></i>
                 <span class="absolute -top-14 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none z-50 font-medium">Pantalla Completa</span>
             </button>
+            <!-- pencil draw -->
+            <button id="draw-btn"
+                class="relative w-12 h-12 rounded-full flex items-center justify-center bg-gradient-to-br from-cyan-500 to-cyan-600 text-white hover:from-cyan-600 hover:to-cyan-700 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-cyan-500/50 group active:scale-95">
+                <i class="fa-solid fa-pencil"></i>
+                <span class="absolute -top-14 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none z-50 font-medium">Lapiz</span>
+            </button>
+
+            <!-- DRAW MENU -->
+            <div id="draw-menu"
+                class="absolute bottom-20 left-1/2 transform -translate-x-1/2
+                    bg-gray-900/95 backdrop-blur-md rounded-xl p-3
+                    flex items-center gap-3 shadow-xl border border-white/10
+                    opacity-0 pointer-events-none transition-all duration-200 scale-95 z-50">
+
+                <!-- Color -->
+                <input id="draw-color" type="color"
+                    class="w-8 h-8 rounded cursor-pointer bg-transparent border-none" />
+
+                <!-- Grosor -->
+                <input id="draw-size" type="range" min="1" max="10" value="3"
+                    class="w-24" />
+
+                <!-- Borrar -->
+                <button id="clear-draw-btn"
+                    class="w-9 h-9 rounded-lg flex items-center justify-center
+                        bg-red-600 hover:bg-red-700 text-white transition">
+                    <i class="fa-solid fa-eraser"></i>
+                </button>
+            </div>
+
+
 
             <!-- Exit -->
             <a href="{% url 'core:dashboard' %}"
@@ -189,6 +228,7 @@
 {% block extra_scripts %}
 <script type="module" src="{% static 'js/GestureProcessor.js' %}"></script>
 <script type="module" src="{% static 'js/SlideManager.js' %}"></script>
+<script type="module" src="{% static 'js/DrawManager.js' %}"></script>
 <script>
     // DEBUG SCRIPT - Verificar que todo está cargado
     window.addEventListener('load', () => {
